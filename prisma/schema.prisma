@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Transportation {
+  id            Int             @id @default(autoincrement())
+  type          String
+  accommodation Accommodation[]
+  checkout      Checkout[]
+}
+
+model Accommodation {
+  id             Int            @id @default(autoincrement())
+  typeId         Int
+  name           String
+  price          Int
+  transportation Transportation @relation(fields: [typeId], references: [id])
+  checkout       Checkout[]
+
+  @@index([typeId], map: "Transportation_typeId_fkey")
+}
+
+model Destination {
+  id            Int        @id @default(autoincrement())
+  name          String
+  checkout_from Checkout[] @relation("Destination_from_fkey")
+  checkout_to   Checkout[] @relation("Destination_to_fkey")
+}
+
+model Checkout {
+  id               Int            @id @default(autoincrement())
+  transportationId Int
+  accommodationId  Int
+  fromDestId       Int
+  toDestId         Int
+  date             DateTime       @db.Date
+  name             String
+  email            String
+  phone            String         @db.Char(15)
+  transportation   Transportation @relation(fields: [transportationId], references: [id])
+  accommodation    Accommodation  @relation(fields: [accommodationId], references: [id])
+  destination_from Destination    @relation("Destination_from_fkey", fields: [fromDestId], references: [id])
+  destination_to   Destination    @relation("Destination_to_fkey", fields: [toDestId], references: [id])
+
+  @@index([transportationId], map: "Transportation_typeId_fkey")
+  @@index([accommodationId], map: "Accommodation_id_fkey")
+}
