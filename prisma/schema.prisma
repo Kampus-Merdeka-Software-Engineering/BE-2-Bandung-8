@@ -13,19 +13,20 @@ datasource db {
 model Transportation {
   id            Int             @id @default(autoincrement())
   type          String
+  iconUrl       String
   accommodation Accommodation[]
   checkout      Checkout[]
 }
 
 model Accommodation {
-  id             Int            @id @default(autoincrement())
-  typeId         Int
-  name           String
-  price          Int
-  transportation Transportation @relation(fields: [typeId], references: [id])
-  checkout       Checkout[]
+  id               Int            @id @default(autoincrement())
+  transportationId Int
+  name             String
+  price            Int
+  transportation   Transportation @relation(fields: [transportationId], references: [id])
+  checkout         Checkout[]
 
-  @@index([typeId], map: "Transportation_typeId_fkey")
+  @@index([transportationId], map: "Transportation_typeId_fkey")
 }
 
 model Destination {
