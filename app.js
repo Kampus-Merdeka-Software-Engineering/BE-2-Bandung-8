@@ -5,6 +5,7 @@ const cors = require("cors");
 const { transportRoutes } = require("./routes/transportation.routes");
 const { destinationRoutes } = require("./routes/destination.routes");
 const { accommodationRoutes } = require("./routes/accommodation.routes");
+const { checkoutRoutes } = require("./routes/checkout.routes");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -23,9 +24,7 @@ app.use("/destination", destinationRoutes);
 
 app.use("/accommodation", accommodationRoutes);
 
-app.post("/checkout", async (req, res) => {
-	res.status(200).send("This route for add data in checkout table");
-});
+app.use("/checkout", checkoutRoutes);
 
 app.all("*", async (req, res) => {
 	res.json({
