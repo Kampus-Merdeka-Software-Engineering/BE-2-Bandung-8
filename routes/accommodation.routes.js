@@ -26,4 +26,20 @@ accommodationRoutes.get("/:transportationId", async (req, res) => {
 	res.status(200).send(acmd);
 });
 
+// Get accommodation data by Id
+accommodationRoutes.get("/:transportationId/:accommodationId", async (req, res) => {
+	try {
+		const { accommodationId } = req.params;
+		const accommodation = await prisma.accommodation.findUnique({
+			where: {
+				id: parseInt(accommodationId),
+			},
+		});
+
+		res.status(200).send(accommodation);
+	} catch (error) {
+		console.error(error);
+	}
+});
+
 module.exports = { accommodationRoutes };
