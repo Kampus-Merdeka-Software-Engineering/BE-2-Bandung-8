@@ -1,10 +1,8 @@
 const express = require("express");
 const checkoutRoutes = express.Router();
 const { prisma } = require("../config/prisma");
-// const bodyParser = require("body-parser");
 
 checkoutRoutes.post("/", async (req, res) => {
-	// const date = new Date().toISOString();
 	const {
 		transportationId,
 		accommodationId,
@@ -18,10 +16,10 @@ checkoutRoutes.post("/", async (req, res) => {
 
 	const newCheckout = await prisma.checkout.create({
 		data: {
-			transportationId: transportationId,
-			accommodationId: accommodationId,
-			fromDestId: fromDestId,
-			toDestId: toDestId,
+			transportationId,
+			accommodationId,
+			fromDestId,
+			toDestId,
 			date,
 			name,
 			email,
